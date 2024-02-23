@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_service/data/api/geocoder.dart';
 import 'package:weather_service/data/api/get_weather.dart';
 import 'package:weather_service/data/models/weather.dart';
 import 'package:weather_service/presentation/widgets/weather_indicator.dart';
@@ -53,12 +51,13 @@ class WeatherPageScreen extends StatelessWidget {
         location.latitude,
         location.longitude,
       ));
-      city = await Geocoder()
-              .decodeLocationRussian(forecastData['city']['name']) ??
-          forecastData['city']['name'].toString();
+      city = forecastData['city']['name'];
     } catch (_) {
       forecastData = GetStorage().read('forecast') ??
-          {"list": [], "city": "Нет интернета"};
+          {
+            "list": [],
+          };
+      city = forecastData['city']['name'];
     }
     print(forecastData);
     GetStorage().write('forecast', forecastData);
