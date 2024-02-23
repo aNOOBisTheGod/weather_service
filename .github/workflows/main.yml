@@ -6,6 +6,8 @@ on:
     branches:
       - main
 name: "Build weather service"
+env:
+  PRIVATE : ${{ secrets.APIKEY }}
 jobs:
   build:
     name: Build & Release
@@ -18,7 +20,10 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.19.1'
-      - run: flutter pub get
+      - run: |
+          touch lib/data/api/token.dart
+          echo $APIKEY >> lib/data/api/token.dart
+      - run: flutter pub getAPIKEY
       - run: flutter build apk --release
       - name: Push to Releases
         uses: ncipollo/release-action@v1
