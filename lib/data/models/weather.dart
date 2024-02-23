@@ -1,3 +1,5 @@
+// класс погоды, получаемой через API
+
 class Weather {
   DateTime dateTime;
   num temperature;

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import './token.dart';
 
+// класс получение погоды
 class GetWeatherAPI {
   final _apiKey = token;
 

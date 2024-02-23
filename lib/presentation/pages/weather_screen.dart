@@ -20,9 +20,9 @@ class ForecastController extends GetxController {
 
   changeForecastIndex(int index) => selectedIndex.value = index;
 
-  locationPermissionGranted() => isPermissionDenied.value = true;
+  locationPermissionGranted() => isPermissionDenied.value = false;
 
-  locationPermissionDenied() => isPermissionDenied.value = false;
+  locationPermissionDenied() => isPermissionDenied.value = true;
 }
 
 // ignore: must_be_immutable
@@ -33,26 +33,31 @@ class WeatherPageScreen extends StatelessWidget {
   late String city;
 
   Future<void> getForecast() async {
+    //функция подгрузки данных о погоде
     List forecast = [];
     LocationPermission permission = await Geolocator.checkPermission();
+    // запрашиваем разрешение на показ данных
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
+    // если пользователь не разрешил доступ к локации - показываем предупреждение
     if (permission == LocationPermission.deniedForever ||
         permission == LocationPermission.denied) {
       _forecastController.locationPermissionDenied();
       return;
     }
-
+    // получаем данные о локации
     Position location = await Geolocator.getCurrentPosition();
     Map forecastData;
     try {
+      // пытаемся получить данные по погоде из API
       forecastData = (await GetWeatherAPI().getWeatherForecast(
         location.latitude,
         location.longitude,
       ));
       city = forecastData['city']['name'];
     } catch (_) {
+      // если не получилось получить данные из интернета - пытаемся подгрузить настоящие
       forecastData = GetStorage().read('forecast') ??
           {
             "list": [],
@@ -60,8 +65,10 @@ class WeatherPageScreen extends StatelessWidget {
       city = forecastData['city']['name'];
     }
     print(forecastData);
+    // обновляем данные о погоде на устройстве
     GetStorage().write('forecast', forecastData);
     for (var weatherData in forecastData['list']) {
+      // данные из апи в список, из которого потом будем делать виджеты
       forecast.add(Weather.fromApi(weatherData));
     }
 
@@ -70,7 +77,9 @@ class WeatherPageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // подгружаем локации
     getForecast();
+    // для правильного формата данных (дата, месяц названием)
     initializeDateFormatting();
 
     return Scaffold(

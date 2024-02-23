@@ -4,6 +4,7 @@ import 'package:weather_service/data/auth/authorization_manager.dart';
 import 'package:weather_service/presentation/pages/authorization_screen.dart';
 import 'package:weather_service/presentation/pages/weather_screen.dart';
 
+// экран, который показывается при входе в приложение
 class SplashScreenPage extends StatelessWidget {
   const SplashScreenPage({super.key});
 

@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:weather_service/data/auth/authorization_manager.dart';
 import 'package:weather_service/presentation/pages/weather_screen.dart';
 
+// контроллер состояния поля с паролем
 class PasswordFieldStateController extends GetxController {
   RxBool isVisible = false.obs;
   changeState() => isVisible.value = !isVisible.value;
 }
 
+// экран авторизации
 // ignore: must_be_immutable
 class AuthorizationPageScreen extends StatelessWidget {
   AuthorizationPageScreen({super.key});
@@ -67,9 +69,11 @@ class AuthorizationPageScreen extends StatelessWidget {
                   onPressed: () async {
                     bool success = false;
                     try {
+                      // пытаеся залогиниться
                       success = await AuthorizationManager().authenticate(
                           _emailController.text, _passwordController.text);
                     } on FirebaseAuthExceptionWithMessage catch (error) {
+                      // если не получается по известной нам ошибке - выводим сообщение в диалоге
                       showDialog(
                           context: context,
                           builder: (__) => AlertDialog(
@@ -85,6 +89,7 @@ class AuthorizationPageScreen extends StatelessWidget {
                     }
 
                     if (!success) {
+                      // если не получилось залогиниться потому что пользователя нет - показываем диалог с предложением создать аккаунт
                       showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
@@ -106,6 +111,7 @@ class AuthorizationPageScreen extends StatelessWidget {
                                                       _emailController.text,
                                                       _passwordController.text);
                                         } on FirebaseAuthExceptionWithMessage catch (error) {
+                                          // обрабатываем известные ошибки при создании аккаунта
                                           showDialog(
                                               context: context,
                                               builder: (__) => AlertDialog(
@@ -123,6 +129,7 @@ class AuthorizationPageScreen extends StatelessWidget {
                                           return;
                                         }
                                         if (!create_success) {
+                                          // если не получилось создать аккаунт - просим проверить данные
                                           showDialog(
                                               context: context,
                                               builder: (__) => AlertDialog(
@@ -139,6 +146,7 @@ class AuthorizationPageScreen extends StatelessWidget {
                                                   ));
                                           return;
                                         }
+                                        // если все хорошо - переходим на экран с погодой
                                         Get.off(() => WeatherPageScreen(),
                                             transition: Transition.fadeIn);
                                       },

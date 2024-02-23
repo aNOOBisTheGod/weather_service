@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+// кастомная ошибка с известным сообщением для обработки ошибок логина и создания аккаунта
 class FirebaseAuthExceptionWithMessage implements Exception {
   String message;
   FirebaseAuthExceptionWithMessage(this.message);
@@ -8,10 +9,12 @@ class FirebaseAuthExceptionWithMessage implements Exception {
 class AuthorizationManager {
   FirebaseAuth auth = FirebaseAuth.instance;
 
+  // функция проверки данных пользователя на устройстве
   bool checkAuth() {
     return auth.currentUser != null;
   }
 
+  // функция входа в аккаунт
   Future<bool> authenticate(String email, String password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
@@ -31,6 +34,7 @@ class AuthorizationManager {
     return true;
   }
 
+  //функция создания аккаунта
   Future<bool> createNewUser(String email, String password) async {
     try {
       await auth.createUserWithEmailAndPassword(
