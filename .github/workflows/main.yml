@@ -23,7 +23,7 @@ jobs:
       - run: |
           touch lib/data/api/token.dart
           echo $APIKEY >> lib/data/api/token.dart
-      - run: flutter pub getAPIKEY
+      - run: flutter pub get
       - run: flutter build apk --release
       - name: Push to Releases
         uses: ncipollo/release-action@v1
