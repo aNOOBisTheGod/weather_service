@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_service/presentation/pages/splash_screen.dart';
 
 void main() async {
+  GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MainApp());
@@ -30,6 +32,7 @@ class MainApp extends StatelessWidget {
           inputDecorationTheme: const InputDecorationTheme(
             labelStyle: TextStyle(fontSize: 15),
           ),
+          // темы для текста из фигмы
           textTheme: TextTheme(
               titleLarge: GoogleFonts.inter(
                   textStyle: const TextStyle(

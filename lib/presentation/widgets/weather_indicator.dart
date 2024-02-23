@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+//виджет с 3д картинкой и фиолетовой тенью сзади для weather_screen
+
 // ignore: must_be_immutable
 class WeatherIndicator extends StatelessWidget {
   bool selected;

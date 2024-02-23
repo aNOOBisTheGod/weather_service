@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+//виджет, который отвечает за переключение времени погоды на странице weather_screen
+
 // ignore: must_be_immutable
 class WeatherPictureWidget extends StatelessWidget {
   String pictureName;

@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_service/data/api/geocoder.dart';
@@ -12,7 +14,7 @@ import 'package:weather_service/presentation/widgets/weather_indicator.dart';
 import 'package:weather_service/presentation/widgets/weather_picture.dart';
 
 class ForecastController extends GetxController {
-  RxInt selectedIndex = 0.obs;
+  RxInt selectedIndex = 0.obs; // параметр, контролирующий индекс данных погоды
   RxList forecast = [].obs;
   RxBool isPermissionDenied = false.obs;
 
@@ -45,17 +47,24 @@ class WeatherPageScreen extends StatelessWidget {
     }
 
     Position location = await Geolocator.getCurrentPosition();
-    Map forecastData = (await GetWeatherAPI().getWeatherForecast(
-      location.latitude,
-      location.longitude,
-    ));
+    Map forecastData;
+    try {
+      forecastData = (await GetWeatherAPI().getWeatherForecast(
+        location.latitude,
+        location.longitude,
+      ));
+      city = await Geocoder()
+              .decodeLocationRussian(forecastData['city']['name']) ??
+          forecastData['city']['name'].toString();
+    } catch (_) {
+      forecastData = GetStorage().read('forecast') ??
+          {"list": [], "city": "Нет интернета"};
+    }
+    print(forecastData);
+    GetStorage().write('forecast', forecastData);
     for (var weatherData in forecastData['list']) {
       forecast.add(Weather.fromApi(weatherData));
     }
-
-    city =
-        await Geocoder().decodeLocationRussian(forecastData['city']['name']) ??
-            forecastData['city']['name'].toString();
 
     _forecastController.loadForecast(forecast);
   }
