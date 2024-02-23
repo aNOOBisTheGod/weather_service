@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "976337737087",
+    "project_id": "weather-service-43c4c",
+    "storage_bucket": "weather-service-43c4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976337737087:android:90a8d156a5be56ccedf64a",
+        "android_client_info": {
+          "package_name": "com.anoobis.weather.service"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6X92W9hZTjbJZ_gQeS_gqkz1KHDixUZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
