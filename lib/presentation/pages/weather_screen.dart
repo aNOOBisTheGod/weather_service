@@ -14,7 +14,7 @@ import 'package:weather_service/presentation/widgets/weather_picture.dart';
 class ForecastController extends GetxController {
   RxInt selectedIndex = 0.obs;
   RxList forecast = [].obs;
-  RxBool isPermissionDenied = true.obs;
+  RxBool isPermissionDenied = false.obs;
 
   loadForecast(List forecastData) => forecast.value = forecastData;
 
@@ -38,7 +38,8 @@ class WeatherPageScreen extends StatelessWidget {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
-    if (permission == LocationPermission.denied) {
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied) {
       _forecastController.locationPermissionDenied();
       return;
     }
